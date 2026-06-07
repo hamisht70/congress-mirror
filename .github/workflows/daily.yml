@@ -1,0 +1,19 @@
+name: Congress Mirror
+on:
+  schedule:
+    - cron: '30 21 * * 1-5'  # 9:30am NZT (UTC+12)
+  workflow_dispatch:
+
+jobs:
+  run:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-python@v4
+        with:
+          python-version: '3.11'
+      - run: pip install requests beautifulsoup4 alpaca-py
+      - run: python congress_mirror.py
+        env:
+          ALPACA_KEY: ${{ secrets.ALPACA_KEY }}
+          ALPACA_SECRET: ${{ secrets.ALPACA_SECRET }}
